@@ -37,12 +37,6 @@
     <header>
       <h1 id="title">
         FrontierWorld Survey Form
-        <?php if ($db) {
-          echo "<p>Connection successful</p>";
-        } elseif (isset($error)){
-          echo "<p>$error</p>";
-        }
-        ?>
       </h1>
     </header>
     <main>
@@ -109,9 +103,6 @@
         </div>
       </form>
     </main>
-    <br/>
-    <?php echo $_POST["rating"]; ?>
-    <br/>
     <footer>
       <p>We hope you enjoyed your stay at FrontierWorld, a Dellos Destinations Attraction</p>
     </footer>
