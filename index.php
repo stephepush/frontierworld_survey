@@ -37,6 +37,12 @@
     <header>
       <h1 id="title">
         FrontierWorld Survey Form
+        <?php if ($db) {
+          echo "<p>Connection successful</p>";
+        } elseif (isset($error)){
+          echo "<p>$error</p>";
+        }
+        ?>
       </h1>
     </header>
     <main>
