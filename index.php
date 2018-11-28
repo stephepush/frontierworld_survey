@@ -1,7 +1,7 @@
 <?php
   try {
     require_once 'includes/pdo_connect.php';
-    $sql = "INSERT INTO prelim_guest_info 
+    $sql = "INSERT INTO prelim_guest_Info 
             (first_name, last_name, email, phone_number)
             VALUES (:first_name, :last_name, :email, :phone_number)";
     $stmt = $db->prepare($sql);
@@ -37,13 +37,9 @@
     <header>
       <h1 id="title">
         FrontierWorld Survey Form
-        <?php if ($db) {
-          echo "<p>Connection successful</p>";
-        } elseif (isset($error)){
-          echo "<p>$error</p>";
-        }
-        ?>
+        
       </h1>
+
     </header>
     <main>
       <p id="description">
@@ -57,7 +53,7 @@
         <br>
         <label id="email-label">*Email <input autocomplete="on" placeholder="Enter your email address here" name="email" id="email" type="email" min="6" max="128" required></label>
         <br>
-        <label id="number-label">*Phone Number <input autocomplete="on" placeholder="Enter a phone number here. Must be in former US format" id="number" type="tel" required pattern="[^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$"></label>
+        <label id="number-label">*Phone Number <input autocomplete="on" placeholder="Enter a phone number here. Must be in former US format" id="number" type="tel" name="phone_number" required pattern="[^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$"></label>
         <br>
         <label>
           How long was your recent stay at FrontierWorld?
