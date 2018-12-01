@@ -96,22 +96,22 @@
         </div>
         <p>Stay up to date on the newest stories being unveiled in FrontierWorld's sister attractions (check all that interest you)!</p>
         <div>
-          <input type="checkbox" id="shanghaiWorld" name="subscribeShanghai" value="shanghaiNewsletter">
-          <label for="shanghaiWorld">ShanghaiWorld</label>
+          <input type="checkbox" id="shanghaiWorld" name="newsletters" value="shanghaiNewsletter">
+          <label for="shanghaiWorld">SamuraiWorld</label>
           &nbsp;
-          <input type="checkbox" id="baltimoreWorld" name="subscribeBaltimore" value="baltimoreNewsletter">
+          <input type="checkbox" id="baltimoreWorld" name="newsletters" value="baltimoreNewsletter">
           <label for="baltimoreWorld">BaltimoreWorld</label>
           &nbsp;
-          <input type="checkbox" id="caesarWorld" name="subscribeCaesar" value="caesarNewsletter">
+          <input type="checkbox" id="caesarWorld" name="newsletters" value="caesarNewsletter">
           <label for="caesarWorld">CaesarWorld</label>
           <br>
-          <input type="checkbox" id="kiplingWorld" name="subscribeKipling" value="kiplingNewsletter">
+          <input type="checkbox" id="kiplingWorld" name="newsletters" value="kiplingNewsletter">
           <label for="kiplingWorld">KiplingWorld</label>
           &nbsp;
-          <input type="checkbox" id="postWorld" name="subscribePost" value="postNewsletter">
+          <input type="checkbox" id="postWorld" name="newsletters" value="postNewsletter">
           <label for="postWorld">PostWorld</label>
           &nbsp;
-          <input type="checkbox" id="medievalWorld" name="subscribeMedieval" value="medievalNewsletter">
+          <input type="checkbox" id="medievalWorld" name="newsletters" value="medievalNewsletter">
           <label for="medievalWorld">MedievalWorld</label>
         </div>
         <p>Do you have any questions, comments, or concerns regarding your recent stay at Frontier World? Feel free to add them in the space below!</p>
