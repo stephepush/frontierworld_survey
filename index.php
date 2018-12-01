@@ -1,15 +1,31 @@
 <?php
   try {
     require_once 'includes/pdo_connect.php';
-    $sql = "INSERT INTO prelim_guest_Info 
+    $prelim = 
+            "INSERT INTO prelim_guest_Info 
             (first_name, last_name, email, phone_number)
             VALUES (:first_name, :last_name, :email, :phone_number)";
-    $stmt = $db->prepare($sql);
-    $stmt->bindParam(':first_name',$_POST["first_name"]);
-    $stmt->bindParam(':last_name',$_POST["last_name"]);
-    $stmt->bindParam(':email',$_POST["email"]);
-    $stmt->bindParam(':phone_number',$_POST["phone_number"]);
-    $stmt->execute();
+    $stmt_prelim = $db->prepare($prelim);
+    $stmt_prelim->bindParam(':first_name',$_POST["first_name"]);
+    $stmt_prelim->bindParam(':last_name',$_POST["last_name"]);
+    $stmt_prelim->bindParam(':email',$_POST["email"]);
+    $stmt_prelim->bindParam(':phone_number',$_POST["phone_number"]);
+    //$stmt_prelim->execute();
+
+    $ratings = 
+            "INSERT INTO guest_ratings_comments
+            (comments, ratings, stay_length)
+            VALUES (:comments, :ratings)";
+    $stmt_ratings = $db->prepare($ratings);
+    $stmt_ratings->bindParam(':comments', $_POST["Extra_comments"]);
+    $stmt_ratings->bindParam(':ratings', $_POST["rating"]);
+    $stmt_ratings->bindParam(':stay_length', $_POST["days_spent"]);
+
+    $newsletter_subscriptions = 
+            "INSERT newsletter_subscriptions
+            ()
+            VALUES ()";
+
     $errorInfo = $stmt->errorInfo();
     if (isset($errorInfo[2])) {
       $error = $errorInfo[2];
