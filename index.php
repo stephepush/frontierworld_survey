@@ -15,24 +15,61 @@
     $ratings = 
             "INSERT INTO guest_ratings_comments
             (comments, ratings, stay_length)
-            VALUES (:comments, :ratings)";
+            VALUES (:comments, :ratings, :stay_length)";
     $stmt_ratings = $db->prepare($ratings);
     $stmt_ratings->bindParam(':comments', $_POST["Extra_comments"]);
     $stmt_ratings->bindParam(':ratings', $_POST["rating"]);
     $stmt_ratings->bindParam(':stay_length', $_POST["days_spent"]);
+    //$stmt_ratings->execute();
 
-    $newsletter_subscriptions = 
-            "INSERT newsletter_subscriptions
-            ()
-            VALUES ()";
-
-    $errorInfo = $stmt->errorInfo();
-    if (isset($errorInfo[2])) {
-      $error = $errorInfo[2];
+    if(!empty($_POST["newsletters"])) {
+      $newsletter = $_POST["newsletters"];
+      foreach($newsletter as $theme){
+        $newsletter_insert = 
+              "INSERT newsletter_subscriptions
+              (updates)
+              VALUES (:updates)";
+        $newsletter_stmt = $db->prepare($newsletter_insert);
+        $newsletter_stmt -> bindParam(':updates', $theme);
+        //$newsletter_stmt -> execute();
+      }
     }
+    
+    $guest_first_name = $_POST["first_name"];
+    //Transaction
+    // $db->beginTransaction();
+    // $stmt_prelim->execute();
+    // if(!$stmt_prelim->rowCount()){
+    //   $db->rollBack();
+    //   $error = "Submission failed: Could not add $guest_first_name's prime credentials.";
+    // } else {
+    //   $stmt_ratings->execute();
+    //   if(!$stmt_ratings->rowCount()){
+    //   $db->rollback();
+    //   $error = "Submission failed: Could not add $guest_first_name's ratings.";
+    //   } else {
+    //     $newsletter_stmt->execute();
+    //     if (!$newsletter_stmt->rowCount()){
+    //       $db->rollback();
+    //       $error = "Submission failed: Could not add $guest_first_names's desired subscriptions";
+    //     } else {
+    //       $db->commit();
+    //     }
+    //   }
+    // }
+    $db->beginTransaction();
+    $stmt_prelim->execute();
+    $stmt_ratings->execute();
+    $newsletter_stmt->execute();
+    $db->commit();
+
+    
   } catch (Exception $e) {
       $error = $e->getMessage();
+      $db->rollback();
+
   }
+  
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -96,22 +133,22 @@
         </div>
         <p>Stay up to date on the newest stories being unveiled in FrontierWorld's sister attractions (check all that interest you)!</p>
         <div>
-          <input type="checkbox" id="shanghaiWorld" name="newsletters" value="shanghaiNewsletter">
+          <input type="checkbox" id="shanghaiWorld" name="newsletters[0]" value="shanghaiNewsletter">
           <label for="shanghaiWorld">SamuraiWorld</label>
           &nbsp;
-          <input type="checkbox" id="baltimoreWorld" name="newsletters" value="baltimoreNewsletter">
+          <input type="checkbox" id="baltimoreWorld" name="newsletters[1]" value="baltimoreNewsletter">
           <label for="baltimoreWorld">BaltimoreWorld</label>
           &nbsp;
-          <input type="checkbox" id="caesarWorld" name="newsletters" value="caesarNewsletter">
+          <input type="checkbox" id="caesarWorld" name="newsletters[2]" value="caesarNewsletter">
           <label for="caesarWorld">CaesarWorld</label>
           <br>
-          <input type="checkbox" id="kiplingWorld" name="newsletters" value="kiplingNewsletter">
+          <input type="checkbox" id="kiplingWorld" name="newsletters[3]" value="kiplingNewsletter">
           <label for="kiplingWorld">KiplingWorld</label>
           &nbsp;
-          <input type="checkbox" id="postWorld" name="newsletters" value="postNewsletter">
+          <input type="checkbox" id="postWorld" name="newsletters[4]" value="postNewsletter">
           <label for="postWorld">PostWorld</label>
           &nbsp;
-          <input type="checkbox" id="medievalWorld" name="newsletters" value="medievalNewsletter">
+          <input type="checkbox" id="medievalWorld" name="newsletters[5]" value="medievalNewsletter">
           <label for="medievalWorld">MedievalWorld</label>
         </div>
         <p>Do you have any questions, comments, or concerns regarding your recent stay at Frontier World? Feel free to add them in the space below!</p>
