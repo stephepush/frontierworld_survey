@@ -6,10 +6,10 @@
             (first_name, last_name, email, phone_number)
             VALUES (:first_name, :last_name, :email, :phone_number)";
     $stmt_prelim = $db->prepare($prelim);
-    $stmt_prelim->bindParam(':first_name',$_POST["first_name"]);
-    $stmt_prelim->bindParam(':last_name',$_POST["last_name"]);
-    $stmt_prelim->bindParam(':email',$_POST["email"]);
-    $stmt_prelim->bindParam(':phone_number',$_POST["phone_number"]);
+    $stmt_prelim->bindParam(':first_name', $_POST["first_name"]);
+    $stmt_prelim->bindParam(':last_name', $_POST["last_name"]);
+    $stmt_prelim->bindParam(':email', $_POST["email"]);
+    $stmt_prelim->bindParam(':phone_number', $_POST["phone_number"]);
     //$stmt_prelim->execute();
 
     $ratings = 
@@ -21,20 +21,25 @@
     $stmt_ratings->bindParam(':ratings', $_POST["rating"]);
     $stmt_ratings->bindParam(':stay_length', $_POST["days_spent"]);
     //$stmt_ratings->execute();
-
+    
+    
+    //$newsletter = $_POST["newsletters"];
+    //if(!empty($newsletter)) {
+    $theme = null;
+    $newsletter_insert = 
+            "INSERT newsletter_subscriptions
+            (updates)
+            VALUES (:updates)";
+    $newsletter_stmt = $db->prepare($newsletter_insert);
+    $newsletter_stmt -> bindParam(':updates', $theme);
+    
     if(!empty($_POST["newsletters"])) {
-      $newsletter = $_POST["newsletters"];
-      foreach($newsletter as $theme){
-        $newsletter_insert = 
-              "INSERT newsletter_subscriptions
-              (updates)
-              VALUES (:updates)";
-        $newsletter_stmt = $db->prepare($newsletter_insert);
-        $newsletter_stmt -> bindParam(':updates', $theme);
-        //$newsletter_stmt -> execute();
+      foreach($_POST["newsletters"] as $theme){
+        //echo $theme;
+        $newsletter_stmt -> execute();
       }
     }
-    
+  
     $guest_first_name = $_POST["first_name"];
     //Transaction
     // $db->beginTransaction();
@@ -133,22 +138,22 @@
         </div>
         <p>Stay up to date on the newest stories being unveiled in FrontierWorld's sister attractions (check all that interest you)!</p>
         <div>
-          <input type="checkbox" id="shanghaiWorld" name="newsletters[0]" value="shanghaiNewsletter">
+          <input type="checkbox" id="shanghaiWorld" name="newsletters[]" value="shanghaiNewsletter">
           <label for="shanghaiWorld">SamuraiWorld</label>
           &nbsp;
-          <input type="checkbox" id="baltimoreWorld" name="newsletters[1]" value="baltimoreNewsletter">
+          <input type="checkbox" id="baltimoreWorld" name="newsletters[]" value="baltimoreNewsletter">
           <label for="baltimoreWorld">BaltimoreWorld</label>
           &nbsp;
-          <input type="checkbox" id="caesarWorld" name="newsletters[2]" value="caesarNewsletter">
+          <input type="checkbox" id="caesarWorld" name="newsletters[]" value="caesarNewsletter">
           <label for="caesarWorld">CaesarWorld</label>
           <br>
-          <input type="checkbox" id="kiplingWorld" name="newsletters[3]" value="kiplingNewsletter">
+          <input type="checkbox" id="kiplingWorld" name="newsletters[]" value="kiplingNewsletter">
           <label for="kiplingWorld">KiplingWorld</label>
           &nbsp;
-          <input type="checkbox" id="postWorld" name="newsletters[4]" value="postNewsletter">
+          <input type="checkbox" id="postWorld" name="newsletters[]" value="postNewsletter">
           <label for="postWorld">PostWorld</label>
           &nbsp;
-          <input type="checkbox" id="medievalWorld" name="newsletters[5]" value="medievalNewsletter">
+          <input type="checkbox" id="medievalWorld" name="newsletters[]" value="medievalNewsletter">
           <label for="medievalWorld">MedievalWorld</label>
         </div>
         <p>Do you have any questions, comments, or concerns regarding your recent stay at Frontier World? Feel free to add them in the space below!</p>
