@@ -1,6 +1,7 @@
 <?php
   try {
-    require_once 'includes/pdo_connect.php';
+    include_once 'includes/pdo_connect.php';
+    $db->beginTransaction();
     $prelim = 
             "INSERT INTO prelim_guest_Info 
             (first_name, last_name, email, phone_number)
@@ -10,27 +11,34 @@
     $stmt_prelim->bindParam(':last_name', $_POST["last_name"]);
     $stmt_prelim->bindParam(':email', $_POST["email"]);
     $stmt_prelim->bindParam(':phone_number', $_POST["phone_number"]);
-    //$stmt_prelim->execute();
-
-    $ratings = 
-            "INSERT INTO guest_ratings_comments
-            (comments, ratings, stay_length)
-            VALUES (:comments, :ratings, :stay_length)";
-    $stmt_ratings = $db->prepare($ratings);
-    $stmt_ratings->bindParam(':comments', $_POST["Extra_comments"]);
-    $stmt_ratings->bindParam(':ratings', $_POST["rating"]);
-    $stmt_ratings->bindParam(':stay_length', $_POST["days_spent"]);
-    //$stmt_ratings->execute();
     
+    $last_id = $db->lastInsertId();
+    $stmt_prelim->execute();
+    if ($stmt_prelim->execute()) {
+        $ratings = 
+                "INSERT INTO guest_ratings_comments
+                (guest_code_ratings, comments, ratings, stay_length)
+                VALUES (:guest_code_ratings, :comments, :ratings, :stay_length)";
+        $stmt_ratings = $db->prepare($ratings);
+        $stmt_ratings->bindParam(':guest_code_ratings', $last_id);
+        $stmt_ratings->bindParam(':comments', $_POST["Extra_comments"]);
+        $stmt_ratings->bindParam(':ratings', $_POST["rating"]);
+        $stmt_ratings->bindParam(':stay_length', $_POST["days_spent"]);
+        $stmt_ratings->execute();
+    } else {
+      $error = $e->getMessage();
+      $db->rollback();
+    }
     
     //$newsletter = $_POST["newsletters"];
     //if(!empty($newsletter)) {
     $theme = null;
     $newsletter_insert = 
-            "INSERT newsletter_subscriptions
-            (updates)
-            VALUES (:updates)";
+            "INSERT INTO  newsletter_subscriptions
+            (guest_code_news_subs, updates)
+            VALUES (:guest_code_news_subs, :updates)";
     $newsletter_stmt = $db->prepare($newsletter_insert);
+    $newsletter_stmt -> bindParam(':guest_code_news_subs', $last_id);
     $newsletter_stmt -> bindParam(':updates', $theme);
     
     if(!empty($_POST["newsletters"])) {
@@ -41,31 +49,6 @@
     }
   
     $guest_first_name = $_POST["first_name"];
-    //Transaction
-    // $db->beginTransaction();
-    // $stmt_prelim->execute();
-    // if(!$stmt_prelim->rowCount()){
-    //   $db->rollBack();
-    //   $error = "Submission failed: Could not add $guest_first_name's prime credentials.";
-    // } else {
-    //   $stmt_ratings->execute();
-    //   if(!$stmt_ratings->rowCount()){
-    //   $db->rollback();
-    //   $error = "Submission failed: Could not add $guest_first_name's ratings.";
-    //   } else {
-    //     $newsletter_stmt->execute();
-    //     if (!$newsletter_stmt->rowCount()){
-    //       $db->rollback();
-    //       $error = "Submission failed: Could not add $guest_first_names's desired subscriptions";
-    //     } else {
-    //       $db->commit();
-    //     }
-    //   }
-    // }
-    $db->beginTransaction();
-    $stmt_prelim->execute();
-    $stmt_ratings->execute();
-    $newsletter_stmt->execute();
     $db->commit();
 
     
