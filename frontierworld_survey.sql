@@ -95,8 +95,5 @@ ALTER TABLE `prelim_guest_Info`
 ALTER TABLE `newsletter_subscriptions`
   ADD CONSTRAINT `newsletter_subscriptions_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `prelim_guest_Info` (`guest_id`);
 
---
--- Constraints for table `prelim_guest_Info`
---
-ALTER TABLE `prelim_guest_Info`
-  ADD CONSTRAINT `prelim_guest_info_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `prelim_guest_Info` (`guest_id`);
+-- You don't need to make constraints for the original table whose column is being 
+-- used as the basis of a foreign key other tables will rely on
